@@ -6,7 +6,7 @@
 /*   By: fde-los- <fde-los-@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 00:40:39 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/08/22 09:10:53 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:15:01 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,12 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	t_list	*new;
 	t_list	*tmp;
 
+	if (lst == NULL || f == NULL)
+		return (NULL);
 	new = NULL;
 	while (lst)
 	{
-		tmp = ft_lstnew_lstmap((*f)(lst -> content));
+		tmp = ft_lstnew_lstmap(f(lst -> content));
 		if (tmp == NULL)
 		{
 			ft_lstclear_lstmap(&new, del);
