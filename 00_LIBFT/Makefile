@@ -6,7 +6,7 @@
 #    By: fde-los- <fde-los-@student.42madrid.c      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/21 22:39:03 by fde-los-          #+#    #+#              #
-#    Updated: 2023/08/22 01:06:05 by fde-los-         ###   ########.fr        #
+#    Updated: 2023/08/28 11:59:40 by fde-los-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,13 +35,15 @@ RM	=	rm -f
 
 AR	=	ar -cr
 
-all: $(NAME)
+all: 		$(NAME)
 
-$(NAME): $(OBJ)
-	$(AR) $(NAME) $(OBJ)
+$(NAME): 	$(OBJ)
+		$(AR) $(NAME) $(OBJ)
 
-bonus: $(OBJ) $(B_OBJ)
-	$(AR) $(NAME) $(OBJ) $(B_OBJ)
+bonus:		$(BONUS)
+
+$(BONUS):	$(OBJ) $(B_OBJ)
+		$(AR) $(NAME) $(OBJ) $(B_OBJ)
 
 clean:
 	$(RM) $(OBJ) $(B_OBJ)
@@ -51,5 +53,5 @@ fclean: clean
 
 re: fclean all
 
-.SILENT: all $(NAME) $(OBJ) clean fclean
-.PHONY: all clean fclean re
+//.SILENT: all $(NAME) $(OBJ) bonus clean fclean
+//.PHONY: all clean fclean re
