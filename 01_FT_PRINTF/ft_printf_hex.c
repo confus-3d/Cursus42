@@ -6,7 +6,7 @@
 /*   By: fde-los- <fde-los-@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:06:35 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/08/29 17:21:29 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:57:05 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ int	ft_putptr(unsigned long long ptr, int flag, int len, int templen)
 	return (len);
 }
 
-int	ft_puthex(unsigned int n, int len, int templen)
+int	ft_puthex(unsigned int n, int len, int templen, int upper)
 {
 	unsigned int	number;
 
 	number = n;
 	if (number > 15)
 	{
-		templen = ft_puthex(number / 16, 0, 0);
+		templen = ft_puthex(number / 16, 0, 0, upper);
 		if (templen == -1)
 			return (-1);
 		len = len + templen;
-		templen = ft_puthex(number % 16, 0, 0);
+		templen = ft_puthex(number % 16, 0, 0, upper);
 		if (templen == -1)
 			return (-1);
 		len = len + templen;
@@ -60,36 +60,7 @@ int	ft_puthex(unsigned int n, int len, int templen)
 		if (number < 10)
 			templen = ft_putchar(number + 48);
 		else
-			templen = ft_putchar(number - 10 + 'a');
-		if (templen == -1)
-			return (-1);
-		len++;
-	}
-	return (len);
-}
-
-int	ft_puthexup(unsigned int n, int len, int templen)
-{
-	unsigned int	number;
-
-	number = n;
-	if (number > 15)
-	{
-		templen = ft_puthexup(number / 16, 0, 0);
-		if (templen == -1)
-			return (-1);
-		len = len + templen;
-		templen = ft_puthexup(number % 16, 0, 0);
-		if (templen == -1)
-			return (-1);
-		len = len + templen;
-	}
-	else
-	{
-		if (number < 10)
-			templen = ft_putchar(number + 48);
-		else
-			templen = ft_putchar(number - 10 + 'A');
+			templen = ft_putchar(number - 10 + upper);
 		if (templen == -1)
 			return (-1);
 		len++;

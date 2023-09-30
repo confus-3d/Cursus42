@@ -6,7 +6,7 @@
 /*   By: fde-los- <fde-los-@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:35:01 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/08/29 17:19:21 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:56:57 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	ft_printf_ap(va_list ap, const char format)
 	if (format == 'u')
 		return (ft_putunsnbr(va_arg(ap, unsigned int)));
 	if (format == 'x')
-		return (ft_puthex(va_arg(ap, int), 0, 0));
+		return (ft_puthex(va_arg(ap, int), 0, 0, 97));
 	if (format == 'X')
-		return (ft_puthexup(va_arg(ap, int), 0, 0));
+		return (ft_puthex(va_arg(ap, int), 0, 0, 65));
 	if (format == '%')
 		return (ft_putchar('%'));
 	return (-1);
