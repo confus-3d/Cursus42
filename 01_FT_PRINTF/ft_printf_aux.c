@@ -6,7 +6,7 @@
 /*   By: fde-los- <fde-los-@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:06:04 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/09/21 18:57:03 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/09/30 11:59:06 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_putstr(char *s)
 	int	len;
 
 	if (s == NULL)
-		return (write(1, "(null)", 6)); 
+		return (write(1, "(null)", 6));
 	len = 0;
 	while (s[len])
 		len++;

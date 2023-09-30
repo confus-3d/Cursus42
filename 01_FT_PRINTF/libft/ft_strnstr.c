@@ -6,7 +6,7 @@
 /*   By: fde-los- <fde-los-@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 18:37:52 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/08/17 19:37:25 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/09/30 11:59:49 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	while (haystack[counter] && counter < len)
 	{
 		compare = 0;
-		while (haystack[counter + compare] == needle[compare] 
+		while (haystack[counter + compare] == needle[compare]
 			&& counter + compare < len)
 		{
 			compare++;
