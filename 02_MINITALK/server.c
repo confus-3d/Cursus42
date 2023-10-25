@@ -6,7 +6,7 @@
 /*   By: fde-los- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:28:51 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/10/24 19:50:06 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/10/25 19:23:05 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,60 @@
 #include <stdio.h>
 #include <signal.h>
 
-void	sig_handler(int signo)
+void	ft_putchar_putnbr_fd(char c, int fd)
 {
-	if (signo == SIGUSR2)
-		write (1, "0", 1);
-	if (signo == SIGUSR1)
-		write (1, "1", 1);
+	write(fd, &c, 1);
 }
 
+void	ft_putnbr_fd(int n, int fd)
+{
+	unsigned int	number;
+
+	if (n < 0)
+	{
+		ft_putchar_putnbr_fd('-', fd);
+		number = n * -1;
+	}
+	else
+		number = n;
+	if (number > 9)
+	{
+		ft_putnbr_fd(number / 10, fd);
+		ft_putnbr_fd(number % 10, fd);
+	}
+	else
+		ft_putchar_putnbr_fd(number + 48, fd);
+}
+
+//void    sig_handler(int signo, siginfo_t *info, void *empty)
+void	sig_handler(int signo)
+{
+	static unsigned char	c = 0;
+	static int				binary = 0;
+
+	if (signo == SIGUSR2)
+	{
+		c = c << 1;
+		binary++;
+	}
+	if (signo == SIGUSR1)
+	{
+		c = (c << 1) | 0b00000001;
+		binary++;
+	}
+	if (binary == 8)
+	{
+		write(1, &c, 1);
+		binary = 0;
+		c = 0;
+	}
+}
+
+//act.sa_sigaction = &sig_handler;
 void	set_signal_action(void)
 {
 	struct sigaction	act;
-	sigset_t	set;
+	sigset_t			set;
 
 	sigemptyset(&set);
 	sigaddset(&set, SIGUSR1);
@@ -37,13 +79,13 @@ void	set_signal_action(void)
 	sigaction(SIGUSR2, &act, NULL);
 }
 
-int	main (int argc, char**argv)
+int	main(void)
 {
-	char	letter;
-
-	printf("Server PID: %d\n", getpid());
+	write(1, "Server PID: ", 12);
+	ft_putnbr_fd(getpid(), 1);
+	write(1, "\n", 1);
 	set_signal_action();
 	while (1)
 		sleep(1);
-	return 0;
+	return (0);
 }
