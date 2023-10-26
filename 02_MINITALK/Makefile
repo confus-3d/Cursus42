@@ -6,7 +6,7 @@
 #    By: fde-los- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/25 19:09:09 by fde-los-          #+#    #+#              #
-#    Updated: 2023/10/25 19:28:39 by fde-los-         ###   ########.fr        #
+#    Updated: 2023/10/26 10:33:01 by fde-los-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,15 @@ SRCC	=	client.c
 
 OBJC	=	$(SRCC:%.c=%.o)
 
-RM		=	rm -f
+SRCS_B	=	server_bonus.c
+
+OBJS_B	=	$(SRCS_B:%.c=%.o)
+
+SRCC_B	=	client_bonus.c
+
+OBJC_B	=	$(SRCC_B:%.c=%.o)
+
+RM	=	rm -f
 
 all:		$(NAMES) $(NAMEC)
 
@@ -36,8 +44,12 @@ $(NAMES):	$(OBJS)
 $(NAMEC): 	$(OBJC)
 			$(CC) $(CFLAGS) $(OBJC) -o $(NAMEC)
 
+bonus:		$(OBJS_B) $(OBJC_B)
+			$(CC) $(CFLAGS) $(OBJS_B) -o $(NAMES)
+			$(CC) $(CFLAGS) $(OBJC_B) -o $(NAMEC)
+
 clean:
-			$(RM) $(OBJS) $(OBJC)
+			$(RM) $(OBJS) $(OBJC) $(OBJS_B) $(OBJC_B)
 
 fclean: 	clean
 			$(RM) $(NAMES) $(NAMEC)
@@ -45,4 +57,5 @@ fclean: 	clean
 re: 		fclean all
 
 .SILENT: all $(NAMES) $(OBJS) $(NAMEC) $(OBJC) bonus clean fclean
+.SILENT: $(OBJS_B) $(OBJC_B)
 .PHONY: all clean fclean re bonus
