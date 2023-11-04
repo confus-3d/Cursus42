@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fde-los- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:28:19 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/10/26 10:17:13 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/10/26 14:27:53 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,30 @@ int	ft_atoi(const char *str)
 	return (number);
 }
 
+//void    sig_handler(int signo, siginfo_t *info, void *empty)
+void	sig_handler(int signo)
+{
+	if (signo == SIGUSR1)
+	{
+		write(1, "Mensaje enviado\n", 15);
+	}
+}
+
+//act.sa_sigaction = &sig_handler;
+void	set_signal_action(void)
+{
+	struct sigaction	act;
+	sigset_t			set;
+
+	sigemptyset(&set);
+	sigaddset(&set, SIGUSR1);
+	sigaddset(&set, SIGUSR2);
+	act.sa_flags = 0;
+	act.sa_mask = set;
+	act.sa_handler = &sig_handler;
+	sigaction(SIGUSR1, &act, NULL);
+}
+
 void	send_message(int serverpid, char *message)
 {
 	int	binary;
@@ -52,13 +76,19 @@ void	send_message(int serverpid, char *message)
 			kill(serverpid, SIGUSR1);
 		else
 			kill(serverpid, SIGUSR2);
-		usleep(100);
+		usleep(150);
 		binary--;
 		if (binary < 0)
 		{
 			binary = 7;
 			message++;
 		}
+	}
+	while (binary >= 0)
+	{
+		kill(serverpid, SIGUSR2);
+		usleep(150);
+		binary--;
 	}
 }
 
@@ -68,7 +98,11 @@ int	main(int argc, char **argv)
 
 	serverpid = ft_atoi(argv[1]);
 	if (argc == 3)
+	{
+		set_signal_action();
 		send_message(serverpid, argv[2]);
+		sleep(1);
+	}
 	else
 	{
 		write(1, "Error.\nFormato: ./client PID MENSAJE\n", 37);
