@@ -6,7 +6,7 @@
 /*   By: fde-los- <fde-los-@student.42madrid.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 19:50:29 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/09/30 13:58:57 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/11/04 17:10:31 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,6 @@ int main(int argc, char **argv)
 		printf("%s", get_next_line(fd));
 		printf("%s", get_next_line(fd));
 	}
+	system("leaks a.out");
 }
 */
