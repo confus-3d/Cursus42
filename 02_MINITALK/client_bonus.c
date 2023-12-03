@@ -6,7 +6,7 @@
 /*   By: fde-los- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:28:19 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/10/26 14:27:53 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/10/27 11:30:44 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	sig_handler(int signo)
 {
 	if (signo == SIGUSR1)
 	{
-		write(1, "Mensaje enviado\n", 15);
+		write(1, "Message delivered.\n", 19);
 	}
 }
 
@@ -58,7 +58,6 @@ void	set_signal_action(void)
 
 	sigemptyset(&set);
 	sigaddset(&set, SIGUSR1);
-	sigaddset(&set, SIGUSR2);
 	act.sa_flags = 0;
 	act.sa_mask = set;
 	act.sa_handler = &sig_handler;
@@ -73,20 +72,22 @@ void	send_message(int serverpid, char *message)
 	while (message[0] != '\0' && binary >= 0)
 	{
 		if (((int)message[0] & (1 << binary)))
-			kill(serverpid, SIGUSR1);
+		{
+			if (kill(serverpid, SIGUSR1) == -1)
+				exit(write(1, "Transmission error.\n", 20));
+		}
 		else
-			kill(serverpid, SIGUSR2);
+			if (kill(serverpid, SIGUSR2) == -1)
+				exit(write(1, "Transmission error.\n", 20));
 		usleep(150);
 		binary--;
-		if (binary < 0)
-		{
+		if (binary < 0 && message++)
 			binary = 7;
-			message++;
-		}
 	}
 	while (binary >= 0)
 	{
-		kill(serverpid, SIGUSR2);
+		if (kill(serverpid, SIGUSR2) == -1)
+			exit(write(1, "Confirmation error.\n", 20));
 		usleep(150);
 		binary--;
 	}
@@ -96,17 +97,14 @@ int	main(int argc, char **argv)
 {
 	int	serverpid;
 
-	serverpid = ft_atoi(argv[1]);
 	if (argc == 3)
 	{
+		serverpid = ft_atoi(argv[1]);
 		set_signal_action();
 		send_message(serverpid, argv[2]);
-		sleep(1);
+		usleep(150);
 	}
-	else
-	{
-		write(1, "Error.\nFormato: ./client PID MENSAJE\n", 37);
-		exit(EXIT_FAILURE);
-	}
+	if (argc != 3)
+		write(1, "Format error: ./client PID MESSAGE\n", 35);
 	return (0);
 }

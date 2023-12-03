@@ -6,7 +6,7 @@
 /*   By: fde-los- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 17:28:51 by fde-los-          #+#    #+#             */
-/*   Updated: 2023/10/26 14:23:03 by fde-los-         ###   ########.fr       */
+/*   Updated: 2023/10/27 11:33:37 by fde-los-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,21 @@ void	sig_handler(int signo, siginfo_t *info, void *empty)
 
 	(void)empty;
 	if (signo == SIGUSR2)
-	{
 		c = c << 1;
-		binary++;
-	}
-	if (signo == SIGUSR1)
-	{
+	else if (signo == SIGUSR1)
 		c = (c << 1) | 0b00000001;
-		binary++;
-	}
+	binary++;
 	if (binary == 8)
 	{
-		if (!c)
-			kill(info->si_pid, SIGUSR1);
+		if (c == '\0')
+		{
+			write(1, "   (", 4);
+			ft_putnbr_fd(info->si_pid, 1);
+			if (kill(info->si_pid, SIGUSR1) == -1)
+				write(1, ") ✖\n", 6);
+			else 
+				write(1, ") ✔\n", 6);
+		}
 		else
 			write(1, &c, 1);
 		binary = 0;
