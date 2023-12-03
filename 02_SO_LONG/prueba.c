@@ -22,13 +22,15 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
-/*
+
+//keycodes de cada tecla especifica, https://eastmanreference.com/complete-list-of-applescript-key-codes
 int	close(int keycode, t_vars *vars)
 {
-	mlx_destroy_window(vars->mlx, vars->win);
+	if (keycode == 53)
+		mlx_destroy_window(vars->mlx, vars->win);
 	return (0);
 }
-
+/*
 int	key_hook(int keycode, t_vars *vars)
 {
 	printf("Hello from key_hook!\n");
@@ -60,7 +62,7 @@ int	main(void)
 		y++;
 	}
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
-//	mlx_hook(vars.win, 2, 1L<<0, close, &vars);
+	mlx_hook(vars.win, 2, 1L<<0, close, &vars);
 //	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 
